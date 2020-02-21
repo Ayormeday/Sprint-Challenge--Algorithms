@@ -102,7 +102,7 @@ class SortingRobot:
     #         self.set_light_off()  # reset & end inital while loop
     #         # move as far right as possible
     #         while self.can_move_right():
-    #             self.swap_item()
+    #             self.swap_item() #swap none with first item to position zero
     #             self.move_right()
     #             # Compare item being held by robot to current item in list. If held item > current item, swap.
     #             if self.compare_item() == 1:
@@ -127,22 +127,34 @@ class SortingRobot:
     #     return
 
     def sort(self):
+        # base case check
         if not self.can_move_right() and not self.set_light_on():
             return
         else:
             self.set_light_on()
             self.swap_item()
-            while self.can_move_right():
-                self.move_right()
+
+            #Returns True if the robot can move right or False if it's at the end of the list.
+            while self.can_move_right(): 
+
+                # continue moving to the right until the list ends
+                self.move_right()  
                 self.compare_item()
-                if self.compare_item() == 1:
+                
+                # If the held item's value is greater than item in list swap item.
+                if self.compare_item() == 1: 
                     self.swap_item()
+
+            #while there's an item to be swapped, go left and iterate again
             while self.compare_item() is not None:
                 self.set_light_off()
                 self.move_left()
-                
+            
+            # repeat swapping as the robot iterates to right again.     
             self.swap_item()
             self.move_right()
+
+            #recursive till the list is exhausted
             return self.sort()
 
 
